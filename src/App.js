@@ -17,10 +17,20 @@ const appReducer = (state, action) =>{
     {
         case 'login':{
             console.log(action.payload)
+            //TODO:  here you would call a hook to call the API to check the credentials
+
+            //TODO: then call a hook to store the token 
             return { ...state, token:Date.now(), user:'test user'};
+        }
+
+        case 'loginWithToken':{
+            //TODO: here you would call a hook to call API for attempting auth with token
+
         }
             
         case 'logout':
+
+            //TODO: clear the token and state 
            return [{...state}]
         
         default:
