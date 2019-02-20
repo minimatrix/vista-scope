@@ -1,28 +1,56 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+import "./App.css";
+import React, { useReducer} from "react";
+import AuthedApplication from './components/AuthedApplication';
+import GuestApplication from './components/GuestApplication';
+import styled from 'styled-components'
+import ApplicationContext from './context/ApplicationContext';
+
+const initialState = {
+    token: undefined,
+    user: undefined
+};
+
+const appReducer = (state, action) =>{
+
+    switch(action.type)
+    {
+        case 'login':{
+            console.log(action.payload)
+            return { ...state, token:Date.now(), user:'test user'};
+        }
+            
+        case 'logout':
+           return [{...state}]
+        
+        default:
+            return state;
+    }
 }
 
-export default App;
+
+export default () => {
+    const [{token, user}, dispatch] = useReducer(appReducer,initialState);
+ 
+    return (
+        <ApplicationContext.Provider value={{user, dispatch}}>
+            <AppWrapper>
+            {
+                user !== undefined ? (
+                    <AuthedApplication/>
+                ) : (
+                    <GuestApplication/>
+                )
+            }
+            </AppWrapper>
+        </ApplicationContext.Provider>
+    )
+};
+
+const AppWrapper = styled.div`
+    display: flex;
+    width: 100%;
+    height: 100vh;
+`;
+
+ 
