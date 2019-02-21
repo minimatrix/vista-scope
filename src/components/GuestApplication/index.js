@@ -9,7 +9,6 @@ export default () => {
 
     return (
         <AppContainer>
-            <span>Login</span>
             <Login/>
         </AppContainer>
     )
