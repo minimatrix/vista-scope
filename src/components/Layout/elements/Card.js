@@ -8,11 +8,9 @@ export default (props) => {
 
     return (
         <Card style={style}>
-           
             {
                 (heading !== undefined) &&
                     <CardHeader style={headerStyle}>
-                  
                        <h3 style={{margin:'5px'}}>{heading}</h3>
                     </CardHeader>   
             }
@@ -44,9 +42,8 @@ const CardHeader = styled.div`
     color:#fff;
     margin:0px;
     padding-bottom: 20px;
-    border-bottom: solid 1px #e8e8e8;
     border-radius: 5px 5px 0px 0px;
-    background:#ff4a6a;
+    background:#1a96de;
 `
 
 const CardBody = styled.div`
