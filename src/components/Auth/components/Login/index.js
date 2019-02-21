@@ -13,7 +13,7 @@ export default () => {
    
     return (
         <Container>
-            <Cursive>Vista Scope</Cursive>
+            <Cursive>Scope</Cursive>
             <Card 
                 style={{width:"20%", marginTop:150, position:'absolute', display:'flex', flexDirection:'column', justifyContent:'space-between'}}
                 headerStyle={{paddginTop:'50px'}}
@@ -39,7 +39,7 @@ const Container = styled.div`
     display: flex;
     width: 100%;
     height: 100vh;
-    background-image: url(${backgroundImg});
+    /* background-image: url(${backgroundImg}); */
     justify-content:center;
 `;
 
