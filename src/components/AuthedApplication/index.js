@@ -1,9 +1,11 @@
 
 import React, { useReducer, createContext } from "react";
-import { Router, navigate } from "@reach/router";
+import { Router, Link } from "@reach/router";
 import Navigation from "../Layout/elements/Navbar";
 import styled from 'styled-components'
-
+import Dashboard from "../Dashboard";
+import Users from "../Users";
+import { Nav, NavItem, NavLink } from 'reactstrap';
 
 
 export default () => {
@@ -12,8 +14,25 @@ export default () => {
         <Page>
             <Navigation/>
             <MainBody>
-                <Sidebar>Side</Sidebar>
-                <Content>Content</Content>
+                <>
+                    <Sidebar>
+
+                    <Nav vertical>
+                        <NavItem>
+                            <Link to="/">Boards</Link>
+                        </NavItem>
+                        <NavItem>
+                            <Link to="users">Users</Link>
+                        </NavItem>
+                      </Nav>
+                    </Sidebar>
+                    <Content>
+                        <Router>
+                            <Dashboard path="/" />
+                            <Users path="users" />
+                        </Router>
+                    </Content>
+                </>
             </MainBody>
         </Page>
     )
