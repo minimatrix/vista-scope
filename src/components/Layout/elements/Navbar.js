@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext, useState} from 'react';
 import {
   Collapse,
   Navbar,
@@ -11,28 +11,26 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem } from 'reactstrap';
+  import ApplicationContext from '../../../context/ApplicationContext'
 
-export default class Navigation extends React.Component {
-  constructor(props) {
-    super(props);
+const Navigation = () =>{
 
-    this.toggle = this.toggle.bind(this);
-    this.state = {
-      isOpen: false
-    };
-  }
-  toggle() {
-    this.setState({
-      isOpen: !this.state.isOpen
-    });
-  }
-  render() {
+  const {dispatch} = useContext(ApplicationContext);
+
+    const toggle = (isOpen) =>{
+      console.log("clicked");
+      setIsOpen(!isOpen);
+    }
+
+    const [isOpen, setIsOpen] = useState(false)
+
+  
     return (
      
         <Navbar color="light" light expand="md">
           <NavbarBrand href="/">Scope</NavbarBrand>
-          <NavbarToggler onClick={this.toggle} />
-          <Collapse isOpen={this.state.isOpen} navbar>
+          <NavbarToggler onClick={toggle} />
+          <Collapse isOpen={isOpen} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
                 <NavLink href="/components/">Components</NavLink>
@@ -52,8 +50,8 @@ export default class Navigation extends React.Component {
                     Option 2
                   </DropdownItem>
                   <DropdownItem divider />
-                  <DropdownItem>
-                    Reset
+                  <DropdownItem  onClick={()=>dispatch({type:'logout'})}>
+                    Logout
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
@@ -62,5 +60,7 @@ export default class Navigation extends React.Component {
         </Navbar>
       
     );
-  }
+  
 }
+
+export default Navigation;

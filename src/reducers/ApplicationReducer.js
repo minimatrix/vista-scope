@@ -1,26 +1,33 @@
-import useLocalStorage from '../hooks/useLocalStorage';
+import { toast } from 'react-toastify';
 
 const ApplicationReducer = (state, action) =>{
 
-    // const { token, setToken, removeToken } = useLocalStorage("application_token", null);
+    const errorToast = (message) =>{
+        toast.error(message, {
+            position: toast.POSITION.TOP_RIGHT
+        });
+    }
 
+    const successToast = (message) =>{
+        toast.success(message, {
+            position: toast.POSITION.TOP_RIGHT
+        });
+    }
     switch(action.type)
     {
-        case 'login':{
-            // setToken("token");
-            // console.log(token);
-            return { ...state, token:Date.now(), user:'test user'};
+        case 'login_success':{
+            const {token, user} = action.payload;
+            return { ...state, token, user};
         }
-
-        case 'loginWithToken':{
-            //TODO: here you would call a hook to call API for attempting auth with token
-
+        case 'login_failure':{
+            errorToast("Login failed - invalid credentials");
+            return { ...state, token:undefined, user:undefined};
         }
             
         case 'logout':
-
             //TODO: clear the token and state 
-           return [{...state}]
+        
+           return [{...state,token:undefined, user:undefined}]
         
         default:
             return state;
