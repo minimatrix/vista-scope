@@ -13,6 +13,23 @@ const authenticateUser = (data) => {
     }).catch(handleErrors);
 }
 
+const authenticateToken = (data) => {
+
+    return axios({
+        method: 'POST',
+        url: process.env.REACT_APP_API + '/auth/verify/token',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + data.token,
+        },
+        data: {
+            'token': data.token,
+        }
+    }).catch(handleErrors);
+}
+
 export {
-    authenticateUser
+    authenticateUser,
+    authenticateToken
 }

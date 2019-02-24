@@ -1,27 +1,53 @@
-import React, {useState, useContext} from "react";
+import React, {useState, useContext, useEffect} from "react";
 import styled from 'styled-components'
 import Card from '../../../Layout/elements/Card'
 import ApplicationContext from '../../../../context/ApplicationContext'
 import backgroundImg from '../../../../assets/images/loginbg.png';
-import {authenticateUser} from '../../requests';
+import {authenticateUser, authenticateToken} from '../../requests';
 import { Button } from 'reactstrap';
+import useLocalStorage from '../../../../hooks/useLocalStorage';
 
 
 export default () => {
 
     const [email, setEmail] = useState('');
+    const [isManualLogin, setIsManualLogin] = useState(false);
     const [password, setPassword] = useState('');
     const {dispatch} = useContext(ApplicationContext);
+    const [token,setToken,removeToken] = useLocalStorage('TOKEN','TOKEN');
 
+    useEffect(()=>{
+        loginWithToken(token)
+    },[token])
+
+   
     const onHandleSubmit = async () => {    
+        setIsManualLogin(true);
         let response = await authenticateUser({email,password});
         if (response !== undefined) {
+            setToken(response.data.token)
             dispatch({type:'login_success', payload:{token:response.data.token, user:response.data.user}});
         }
         else{
+            removeToken("TOKEN");
             dispatch({type:'login_failure'});
         }
     };
+
+
+    const loginWithToken = async () =>{
+       
+        if(token !== "TOKEN" && isManualLogin !== true){
+        
+            let response = await authenticateToken({token});
+            if (response !== undefined) {
+                dispatch({type:'login_success', payload:{token:response.data.token, user:response.data.user}});
+            }
+            else{
+                removeToken("TOKEN");
+            }
+        }
+    }
 
    
     return (

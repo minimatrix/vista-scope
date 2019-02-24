@@ -25,8 +25,7 @@ const ApplicationReducer = (state, action) =>{
         }
             
         case 'logout':
-            //TODO: clear the token and state 
-        
+            //TODO: clear the state 
            return [{...state,token:undefined, user:undefined}]
         
         default:

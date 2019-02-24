@@ -12,18 +12,23 @@ import {
   DropdownMenu,
   DropdownItem } from 'reactstrap';
   import ApplicationContext from '../../../context/ApplicationContext'
+  import useLocalStorage from '../../../hooks/useLocalStorage';
 
 const Navigation = () =>{
 
-  const {dispatch} = useContext(ApplicationContext);
+    const {dispatch} = useContext(ApplicationContext);
 
     const toggle = (isOpen) =>{
-      console.log("clicked");
       setIsOpen(!isOpen);
     }
 
     const [isOpen, setIsOpen] = useState(false)
+    const [token,setToken,removeToken] = useLocalStorage('TOKEN', undefined);
 
+    const onHandleLogout = () =>{
+      removeToken("TOKEN");
+      dispatch({type:'logout'})
+    }
   
     return (
      
@@ -50,7 +55,7 @@ const Navigation = () =>{
                     Option 2
                   </DropdownItem>
                   <DropdownItem divider />
-                  <DropdownItem  onClick={()=>dispatch({type:'logout'})}>
+                  <DropdownItem  onClick={onHandleLogout}>
                     Logout
                   </DropdownItem>
                 </DropdownMenu>

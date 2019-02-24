@@ -30,9 +30,7 @@ export default () => {
 
 
 
-    useEffect(()=>{
-        console.log("token updated",token);
-    },[token])
+  
  
     return (
         <ApplicationContext.Provider value={{user, dispatch}}>
