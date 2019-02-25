@@ -16,15 +16,14 @@ export default () => {
             <MainBody>
                 <>
                     <Sidebar>
-
-                    <Nav vertical>
-                        <NavItem>
-                            <Link to="/">Boards</Link>
-                        </NavItem>
-                        <NavItem>
-                            <Link to="users">Users</Link>
-                        </NavItem>
-                      </Nav>
+                        <Nav vertical>
+                            <NavItem>
+                                <Link to="/">Boards</Link>
+                            </NavItem>
+                            <NavItem>
+                                <Link to="users">Users</Link>
+                            </NavItem>
+                        </Nav>
                     </Sidebar>
                     <Content>
                         <Router>

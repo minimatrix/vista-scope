@@ -9,31 +9,17 @@ import {ApplicationReducer} from './reducers/ApplicationReducer';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const initialState = {
-    token: undefined,
-    user: undefined
-};
-
-
-
 export default () => {
 
+    const initialState = {
+        token: undefined,
+        user: undefined
+    };
+
     const [{token, user}, dispatch] = useReducer(ApplicationReducer,initialState);
-
-
-    // check local storage for an existing token 
-    // if present attempt to log the user in
-    // on sucess update user in global state and on failure, remove the token forcing user to login manually
-    
-
-    
-
-
-
-  
  
     return (
-        <ApplicationContext.Provider value={{user, dispatch}}>
+        <ApplicationContext.Provider value={{user, token, dispatch}}>
             <AppWrapper>
                 <ToastContainer/>
                 {

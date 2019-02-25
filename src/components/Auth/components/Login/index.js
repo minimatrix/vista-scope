@@ -10,10 +10,10 @@ import useLocalStorage from '../../../../hooks/useLocalStorage';
 
 export default () => {
 
+    const {dispatch} = useContext(ApplicationContext);
     const [email, setEmail] = useState('');
     const [isManualLogin, setIsManualLogin] = useState(false);
     const [password, setPassword] = useState('');
-    const {dispatch} = useContext(ApplicationContext);
     const [token,setToken,removeToken] = useLocalStorage('TOKEN','TOKEN');
 
     useEffect(()=>{
@@ -34,11 +34,8 @@ export default () => {
         }
     };
 
-
     const loginWithToken = async () =>{
-       
         if(token !== "TOKEN" && isManualLogin !== true){
-        
             let response = await authenticateToken({token});
             if (response !== undefined) {
                 dispatch({type:'login_success', payload:{token:response.data.token, user:response.data.user}});
@@ -49,12 +46,11 @@ export default () => {
         }
     }
 
-   
     return (
         <Container>
             <Cursive>Scope</Cursive>
             <Card 
-                style={{width:"20%", marginTop:150, position:'absolute', display:'flex', flexDirection:'column', justifyContent:'space-between'}}
+                style={{width:"20%", minWidth:'300px', marginTop:150, position:'absolute', display:'flex', flexDirection:'column', justifyContent:'space-between'}}
                 headerStyle={{paddginTop:'50px'}}
                 heading="Login" useLogo={true}
             >
@@ -63,9 +59,9 @@ export default () => {
                 
                 <Button onClick={onHandleSubmit} value="submit">Submit</Button>
             
-                <div style={{marginTop:'20px', textAlign:'center'}}>
+                <div style={{marginTop:'20px', fontSize:'0.8em', textAlign:'center'}}>
                     Don't have an account? register here<br/>
-                    forgot you password?
+                    forgot your password?
                 </div>
              
             </Card>    

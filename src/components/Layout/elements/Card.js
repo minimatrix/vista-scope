@@ -11,7 +11,7 @@ export default (props) => {
             {
                 (heading !== undefined) &&
                     <CardHeader style={headerStyle}>
-                       <h3 style={{margin:'5px'}}>{heading}</h3>
+                       <h5 style={{margin:'5px'}}>{heading}</h5>
                     </CardHeader>   
             }
             <CardBody>
