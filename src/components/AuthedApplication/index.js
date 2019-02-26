@@ -5,6 +5,7 @@ import Navigation from "../Layout/elements/Navbar";
 import styled from 'styled-components'
 import Dashboard from "../Dashboard";
 import Users from "../Users";
+import Board from "../Board/Show";
 import { Nav, NavItem, NavLink } from 'reactstrap';
 
 
@@ -27,8 +28,11 @@ export default () => {
                     </Sidebar>
                     <Content>
                         <Router>
-                            <Dashboard path="/" />
-                            <Users path="users" />
+                           
+                            <Dashboard exact path="/" />
+                            <Users exact path="users" />
+                            <Board exact path="boards/:id"/>
+                            
                         </Router>
                     </Content>
                 </>

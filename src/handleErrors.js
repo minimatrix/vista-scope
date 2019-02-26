@@ -8,7 +8,7 @@ export default function handleErrors(err, message = false) {
             position: toast.POSITION.TOP_RIGHT
         });
     }
-
+console.log(err.response.data.errors);
     if (err.response) {
         if (err.response.data.errors) {
             Object.entries(err.response.data.errors).forEach(

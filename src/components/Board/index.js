@@ -1,10 +1,9 @@
 
 import React, {useState, useContext, useEffect} from "react";
-import {fetchBoards, createBoard} from './requests';
+import {fetchBoards, createBoard,} from './requests';
 import ApplicationContext from '../../context/ApplicationContext'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Link } from "@reach/router";
-
 
 export default () => {
 
