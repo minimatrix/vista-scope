@@ -1,31 +1,40 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Droppable} from 'react-beautiful-dnd';
+import {Droppable, Draggable} from 'react-beautiful-dnd';
 import Task from './Task';
 
 const Column = (props) =>{
     return (
-        <Container>
-            <Title>{props.column.title}</Title>
-            <Droppable droppableId={props.column.id}>
+        <Draggable draggableId={props.column.id} index={props.index}>
             {
                 (provided)=>(
-                    <TaskList
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
-                    >
-                    {
-                        props.tasks.map((task,index) => <Task key={task.id} task={task} index={index}/>)
-                    }
-                    {provided.placeholder}
-                </TaskList>    
+                    <Container {...provided.draggableProps} ref={provided.innerRef}>
+                        <Title {...provided.dragHandleProps}>{props.column.title}</Title>
+                        <Droppable droppableId={props.column.id} type="task">
+                        {
+                            (provided)=>(
+                                <TaskList
+                                    ref={provided.innerRef}
+                                    {...provided.droppableProps}
+                                >
+                                {
+                                    props.tasks.map((task,index) => <Task key={task.id} task={task} index={index}/>)
+                                }
+                                {provided.placeholder}
+                            </TaskList>    
+                            )
+                        }
+                            
+                        </Droppable>
+                        
+                        <div style={{fontSize:"0.8em", padding:10,textAlign:"left"}}> + Add Card</div>
+                    </Container>
                 )
             }
-                
-            </Droppable>
-            
-            <div style={{fontSize:"0.8em", padding:10,textAlign:"left"}}> + Add Card</div>
-        </Container>
+           
+
+        </Draggable>
+        
     )
 }
 

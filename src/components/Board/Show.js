@@ -4,8 +4,9 @@ import {showBoard} from './requests';
 import ApplicationContext from '../../context/ApplicationContext'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Link } from "@reach/router";
-import {DragDropContext} from "react-beautiful-dnd";
-import Column from './components/Column'
+import {DragDropContext, Droppable} from "react-beautiful-dnd";
+import Column from './components/Column';
+import styled from 'styled-components';
 
 export default (props) => {
 
@@ -49,7 +50,7 @@ export default (props) => {
     const onDragEnd = result =>{
         console.log("ONDRAGEND",result)
 
-        const {destination, source, draggableId} = result;
+        const {destination, source, draggableId, type} = result;
         // if  task not dropped in droppable area then ignore
         if(!destination)
         {
@@ -62,6 +63,17 @@ export default (props) => {
         }
 
         //TODO - redorder column
+        if(type === "column")
+        {
+            const newColumnOrder = Array.from(columnOrder);
+            newColumnOrder.splice(source.index, 1);
+            newColumnOrder.splice(destination.index, 0, draggableId)
+
+            setColumnOrder(newColumnOrder);
+            return;
+        }
+
+
         
         const start = columnsList[source.droppableId]
         const end = columnsList[destination.droppableId]
@@ -118,24 +130,41 @@ export default (props) => {
     return (
         <div>
             <h3>{board.name}</h3>
-            <div style={{width:'100%', display:'flex'}}>
-
-                <DragDropContext
+            <DragDropContext
                     onDragEnd={onDragEnd}
-                >
-                    {
-                        columnOrder.map((columnId, index)=>
+            >
+                {
+                    <Droppable 
+                        droppableId="board-columns" 
+                        direction="horizontal" 
+                        type="column"
+                    >
                         {
-                            const column = columnsList[columnId];
-                            const tasks = column.tasks.map((taskId) => tasksList[taskId]);
-                            return (<Column column={column} tasks={tasks} />)
-                        })
-                    }
-                </DragDropContext>
-                
-            </div>
+                            provided => (
+                                <Container {...provided.droppableProps} ref={provided.innerRef}>
+                                    {
+                                        columnOrder.map((columnId, index) =>
+                                        {
+                                            const column = columnsList[columnId];
+                                            const tasks = column.tasks.map((taskId) => tasksList[taskId]);
+                                            return (<Column column={column} tasks={tasks} index={index}/>)
+                                        })
+                                    }
+                                    {provided.placeholder}
+                                </Container>
+                            )
+                        }
+                     </Droppable>
+                }
+            </DragDropContext>
+            
         </div>
     )
 };
+
+const Container = styled.div`
+    width:100%;
+    display:flex;
+`
 
  
