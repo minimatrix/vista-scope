@@ -4,7 +4,6 @@ import {Droppable} from 'react-beautiful-dnd';
 import Task from './Task';
 
 const Column = (props) =>{
-    console.log(props);
     return (
         <Container>
             <Title>{props.column.title}</Title>

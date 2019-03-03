@@ -10,20 +10,20 @@ import Column from './components/Column'
 export default (props) => {
 
 
-    const initialColumnList = {
-        'column-1':{id:1, title:'To Do', tasks:['task-1', 'task-2']},
-        'column-2':{id:2, title:'Doing', tasks:['task-3','task-4']},
-        'column-3':{id:3, title:'Done', tasks:[]},
-    }
+    const [columnsList, setColumnsList] = useState({
+        'column-1':{id:'column-1', title:'To Do', tasks:['task-1', 'task-2']},
+        'column-2':{id:'column-2', title:'Doing', tasks:['task-3','task-4']},
+        'column-3':{id:'column-3', title:'Done', tasks:[]},
+    });
 
-    const initialTasksList = {
-        'task-1':{id:1, content:'Create account page'},
-        'task-2':{id:2, content:'Implement Drag and Drop of Columns and Tasks'},
-        'task-3':{id:3, content:'Create useLocalStorage hook'},
-        'task-4':{id:4, content:'Add sortability of tasks/columns'}
-    }
+    const [tasksList, setTasksList] = useState({
+        'task-1':{id:'task-1', content:'Create account page'},
+        'task-2':{id:'task-2', content:'Implement Drag and Drop of Columns and Tasks'},
+        'task-3':{id:'task-3', content:'Create useLocalStorage hook'},
+        'task-4':{id:'task-4', content:'Add sortability of tasks/columns'}
+    });
 
-    const initialColumnOrder = ['column-1', 'column-2', 'column-3']
+    const [columnOrder,setColumnOrder] = useState(['column-1', 'column-2', 'column-3']);
 
     const {token} = useContext(ApplicationContext);
     const [board,setBoard] = useState({});
@@ -47,7 +47,71 @@ export default (props) => {
     };
 
     const onDragEnd = result =>{
+        console.log("ONDRAGEND",result)
+
+        const {destination, source, draggableId} = result;
+        // if  task not dropped in droppable area then ignore
+        if(!destination)
+        {
+            return;
+        }
+
+        //check if the location of the task was dropped back in its original position - if so then ignore
+        if(destination.droppableId === source.droppableId && destination.source === source.index){
+            return;
+        }
+
         //TODO - redorder column
+        
+        const start = columnsList[source.droppableId]
+        const end = columnsList[destination.droppableId]
+
+        console.log(start, end)
+
+        // if task is moved within the same column 
+        if(start === end)
+        {
+            const newTaskIds = Array.from(start.tasks);
+            // move the task from its previos index to its new index in the array 
+            newTaskIds.splice(source.index, 1);
+            newTaskIds.splice(destination.index, 0, draggableId);
+            
+
+            const newColumn = {
+                ...start,
+                tasks:newTaskIds
+            }
+            
+            const updatedColumnList = {
+                ...columnsList,
+                [newColumn.id]:newColumn
+            }
+
+            setColumnsList(updatedColumnList);
+
+            return;
+        }
+
+        // moving a task from one to another  - needs to change both column tasks arrays.. remove from the first and ad toThe second
+        const startTaskIds = Array.from(start.tasks);
+        startTaskIds.splice(source.index,1);
+        const newStart = {...start, tasks:startTaskIds}
+
+        const finishTaskIds = Array.from(end.tasks);
+        finishTaskIds.splice(destination.index, 0, draggableId);
+        const newFinish = {...end, tasks:finishTaskIds}
+
+        const updatedColumnList = {
+            ...columnsList,
+            [newStart.id]:newStart,
+            [newFinish.id]:newFinish
+        }
+
+        console.log(updatedColumnList);
+
+        setColumnsList(updatedColumnList);
+
+        
     }
 
 
@@ -60,11 +124,11 @@ export default (props) => {
                     onDragEnd={onDragEnd}
                 >
                     {
-                        initialColumnOrder.map((columnId, index)=>
+                        columnOrder.map((columnId, index)=>
                         {
-                            const column = initialColumnList[columnId];
-                            const tasks = column.tasks.map((taskId,index) => initialTasksList[taskId]);
-                            return (<Column column={column} tasks={tasks} index={index}/>)
+                            const column = columnsList[columnId];
+                            const tasks = column.tasks.map((taskId) => tasksList[taskId]);
+                            return (<Column column={column} tasks={tasks} />)
                         })
                     }
                 </DragDropContext>
