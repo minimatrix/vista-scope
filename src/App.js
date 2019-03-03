@@ -1,57 +1,34 @@
 
 import "./App.css";
-import React, { useReducer} from "react";
+import React, { useReducer, useEffect} from "react";
 import AuthedApplication from './components/AuthedApplication';
 import GuestApplication from './components/GuestApplication';
 import styled from 'styled-components'
 import ApplicationContext from './context/ApplicationContext';
-
-const initialState = {
-    token: undefined,
-    user: undefined
-};
-
-const appReducer = (state, action) =>{
-
-    switch(action.type)
-    {
-        case 'login':{
-            console.log(action.payload)
-            //TODO:  here you would call a hook to call the API to check the credentials
-
-            //TODO: then call a hook to store the token 
-            return { ...state, token:Date.now(), user:'test user'};
-        }
-
-        case 'loginWithToken':{
-            //TODO: here you would call a hook to call API for attempting auth with token
-
-        }
-            
-        case 'logout':
-
-            //TODO: clear the token and state 
-           return [{...state}]
-        
-        default:
-            return state;
-    }
-}
-
+import {ApplicationReducer} from './reducers/ApplicationReducer';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default () => {
-    const [{token, user}, dispatch] = useReducer(appReducer,initialState);
+
+    const initialState = {
+        token: undefined,
+        user: undefined
+    };
+
+    const [{token, user}, dispatch] = useReducer(ApplicationReducer,initialState);
  
     return (
-        <ApplicationContext.Provider value={{user, dispatch}}>
+        <ApplicationContext.Provider value={{user, token, dispatch}}>
             <AppWrapper>
-            {
-                user !== undefined ? (
-                    <AuthedApplication/>
-                ) : (
-                    <GuestApplication/>
-                )
-            }
+                <ToastContainer/>
+                {
+                    user !== undefined ? (
+                        <AuthedApplication/>
+                    ) : (
+                        <GuestApplication/>
+                    )
+                }
             </AppWrapper>
         </ApplicationContext.Provider>
     )

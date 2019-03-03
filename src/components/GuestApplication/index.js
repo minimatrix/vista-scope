@@ -9,14 +9,13 @@ export default () => {
 
     return (
         <AppContainer>
-            <span>Login</span>
             <Login/>
         </AppContainer>
     )
 };
 
 const AppContainer = styled.div`
-    background:#4888ad;
+    background:#5db6ea;
     width:100%;
     display:flex;
     justify-content:center;
