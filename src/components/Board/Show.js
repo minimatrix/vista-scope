@@ -4,13 +4,31 @@ import {showBoard} from './requests';
 import ApplicationContext from '../../context/ApplicationContext'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Link } from "@reach/router";
+import {DragDropContext} from "react-beautiful-dnd";
+import Column from './components/Column'
 
 export default (props) => {
+
+
+    const initialColumnList = {
+        'column-1':{id:1, title:'To Do', tasks:['task-1', 'task-2']},
+        'column-2':{id:2, title:'Doing', tasks:['task-3','task-4']},
+        'column-3':{id:3, title:'Done', tasks:[]},
+    }
+
+    const initialTasksList = {
+        'task-1':{id:1, content:'Create account page'},
+        'task-2':{id:2, content:'Implement Drag and Drop of Columns and Tasks'},
+        'task-3':{id:3, content:'Create useLocalStorage hook'},
+        'task-4':{id:4, content:'Add sortability of tasks/columns'}
+    }
+
+    const initialColumnOrder = ['column-1', 'column-2', 'column-3']
 
     const {token} = useContext(ApplicationContext);
     const [board,setBoard] = useState({});
     const [loading,setLoading] = useState(false);
-    const [boardLists, setBoardLists] = useState([]);
+    // const [boardLists, setBoardLists] = useState(initialBoardList);
     const {id} = props;
 
     useEffect(()=>{
@@ -28,18 +46,29 @@ export default (props) => {
         setLoading(false);
     };
 
+    const onDragEnd = result =>{
+        //TODO - redorder column
+    }
+
 
     return (
         <div>
             <h3>{board.name}</h3>
             <div style={{width:'100%', display:'flex'}}>
-            
-                {
-                    boardLists.map((list)=><div style={{padding:20, width:200, height:100, margin:10,textAlign:'center', border:'solid 1px grey', background:'lightgrey', cursor:'pointer', borderRadius:8}}>{list.name}</div>)
-                }
-                <div style={{padding:20, width:200, height:100, margin:10,textAlign:'center', background:'lightgrey', cursor:'pointer', borderRadius:8}}
-                    onClick={()=>setBoardLists([...boardLists, {name:'test'}])}
-                >Add List</div>
+
+                <DragDropContext
+                    onDragEnd={onDragEnd}
+                >
+                    {
+                        initialColumnOrder.map((columnId, index)=>
+                        {
+                            const column = initialColumnList[columnId];
+                            const tasks = column.tasks.map((taskId,index) => initialTasksList[taskId]);
+                            return (<Column column={column} tasks={tasks} index={index}/>)
+                        })
+                    }
+                </DragDropContext>
+                
             </div>
         </div>
     )

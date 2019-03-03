@@ -1,8 +1,8 @@
 import React, {useContext, useState} from 'react';
 import {
-  Collapse,
+    Collapse,
   Navbar,
-  NavbarToggler,
+  NavbarToggler, 
   NavbarBrand,
   Nav,
   NavItem,
@@ -23,7 +23,7 @@ const Navigation = () =>{
     }
 
     const [isOpen, setIsOpen] = useState(false)
-    const [token,setToken,removeToken] = useLocalStorage('TOKEN', undefined);
+    const [token, setToken,removeToken] = useLocalStorage('TOKEN', undefined);
 
     const onHandleLogout = () =>{
       removeToken("TOKEN");
@@ -38,11 +38,9 @@ const Navigation = () =>{
           <Collapse isOpen={isOpen} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink href="/components/">Components</NavLink>
+                <NavLink href="/account">My Account</NavLink>
               </NavItem>
-              <NavItem>
-                <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
-              </NavItem>
+              
               <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret>
                   Options

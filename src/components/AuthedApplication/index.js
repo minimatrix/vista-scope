@@ -8,6 +8,9 @@ import Users from "../Users";
 import Board from "../Board/Show";
 import { Nav, NavItem, NavLink } from 'reactstrap';
 
+const NotFound = () =>
+    <div>404 - Not Found</div>
+
 
 export default () => {
 
@@ -24,11 +27,14 @@ export default () => {
                             <NavItem>
                                 <Link to="users">Users</Link>
                             </NavItem>
+                            <NavItem>
+                                <Link to="usersddd">Usersss</Link>
+                            </NavItem>
                         </Nav>
                     </Sidebar>
                     <Content>
                         <Router>
-                           
+                            <NotFound default />
                             <Dashboard exact path="/" />
                             <Users exact path="users" />
                             <Board exact path="boards/:id"/>
